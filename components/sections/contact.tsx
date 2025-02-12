@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
+import { Calendar, Clock, Info, Mail, Phone, User } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -17,29 +18,70 @@ const formSchema = z.object({
   service: z.enum(["basic", "premium", "undecided"], {
     required_error: "Veuillez sélectionner une option",
   }),
+  preferredDate: z.string().min(1, "Veuillez sélectionner une date"),
   preferredTime: z.enum(["morning", "afternoon", "evening"], {
     required_error: "Veuillez sélectionner une plage horaire",
   }),
   isRetirementHome: z.boolean().default(false),
+  numberOfParticipants: z.string().optional(),
   message: z
     .string()
-    .min(10, "Le message doit contenir au moins 10 caractères"),
+    .min(10, "Le message doit contenir au moins 10 caractères")
+    .max(1000, "Le message ne doit pas dépasser 1000 caractères"),
+  howDidYouHearAboutUs: z.enum(
+    ["search", "social", "recommendation", "other"],
+    {
+      required_error: "Veuillez nous indiquer comment vous nous avez connu",
+    }
+  ),
 });
 
 type FormData = z.infer<typeof formSchema>;
 
+const InputWrapper = ({
+  children,
+  label,
+  error,
+  icon: Icon,
+}: {
+  children: React.ReactNode;
+  label: string;
+  error?: string;
+  icon?: React.ComponentType<any>;
+}) => (
+  <div className="relative">
+    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+      {label}
+    </label>
+    <div className="relative">
+      {Icon && (
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <Icon className="h-5 w-5 text-gray-400" />
+        </div>
+      )}
+      {children}
+    </div>
+    {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+  </div>
+);
+
 export function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [showRetirementHomeFields, setShowRetirementHomeFields] =
+    useState(false);
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
     reset,
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
+
+  const isRetirementHome = watch("isRetirementHome");
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
@@ -49,7 +91,7 @@ export function Contact() {
     setIsSubmitting(false);
     setIsSuccess(true);
     reset();
-    setTimeout(() => setIsSuccess(false), 3000);
+    setTimeout(() => setIsSuccess(false), 5000);
   };
 
   return (
@@ -80,115 +122,69 @@ export function Contact() {
         >
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-              <div>
-                <label
-                  htmlFor="firstName"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Prénom
-                </label>
+              <InputWrapper
+                label="Prénom"
+                error={errors.firstName?.message}
+                icon={User}
+              >
                 <input
                   type="text"
                   {...register("firstName")}
-                  className={`mt-1 block w-full rounded-md shadow-sm ${
-                    errors.firstName
-                      ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:border-red-500 focus:ring-red-500"
-                  } dark:bg-gray-800 dark:border-gray-600`}
+                  className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-800 dark:border-gray-600"
+                  placeholder="Jean"
                 />
-                {errors.firstName && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {errors.firstName.message}
-                  </p>
-                )}
-              </div>
+              </InputWrapper>
 
-              <div>
-                <label
-                  htmlFor="lastName"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Nom
-                </label>
+              <InputWrapper
+                label="Nom"
+                error={errors.lastName?.message}
+                icon={User}
+              >
                 <input
                   type="text"
                   {...register("lastName")}
-                  className={`mt-1 block w-full rounded-md shadow-sm ${
-                    errors.lastName
-                      ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:border-red-500 focus:ring-red-500"
-                  } dark:bg-gray-800 dark:border-gray-600`}
+                  className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-800 dark:border-gray-600"
+                  placeholder="Dupont"
                 />
-                {errors.lastName && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {errors.lastName.message}
-                  </p>
-                )}
-              </div>
+              </InputWrapper>
             </div>
 
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Email
-                </label>
+              <InputWrapper
+                label="Email"
+                error={errors.email?.message}
+                icon={Mail}
+              >
                 <input
                   type="email"
                   {...register("email")}
-                  className={`mt-1 block w-full rounded-md shadow-sm ${
-                    errors.email
-                      ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:border-red-500 focus:ring-red-500"
-                  } dark:bg-gray-800 dark:border-gray-600`}
+                  className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-800 dark:border-gray-600"
+                  placeholder="jean.dupont@example.com"
                 />
-                {errors.email && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {errors.email.message}
-                  </p>
-                )}
-              </div>
+              </InputWrapper>
 
-              <div>
-                <label
-                  htmlFor="phone"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Téléphone
-                </label>
+              <InputWrapper
+                label="Téléphone"
+                error={errors.phone?.message}
+                icon={Phone}
+              >
                 <input
                   type="tel"
                   {...register("phone")}
-                  className={`mt-1 block w-full rounded-md shadow-sm ${
-                    errors.phone
-                      ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:border-red-500 focus:ring-red-500"
-                  } dark:bg-gray-800 dark:border-gray-600`}
+                  className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-800 dark:border-gray-600"
+                  placeholder="06 12 34 56 78"
                 />
-                {errors.phone && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {errors.phone.message}
-                  </p>
-                )}
-              </div>
+              </InputWrapper>
             </div>
 
-            <div>
-              <label
-                htmlFor="service"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                Prestation souhaitée
-              </label>
+            <InputWrapper
+              label="Prestation souhaitée"
+              error={errors.service?.message}
+              icon={Info}
+            >
               <select
                 {...register("service")}
-                className={`mt-1 block w-full rounded-md shadow-sm ${
-                  errors.service
-                    ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                    : "border-gray-300 focus:border-red-500 focus:ring-red-500"
-                } dark:bg-gray-800 dark:border-gray-600`}
+                className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-800 dark:border-gray-600"
               >
                 <option value="">Sélectionnez une option</option>
                 <option value="basic">L'Art de la Mémoire (950€)</option>
@@ -197,83 +193,102 @@ export function Contact() {
                 </option>
                 <option value="undecided">Je ne sais pas encore</option>
               </select>
-              {errors.service && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.service.message}
-                </p>
+            </InputWrapper>
+
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+              <InputWrapper
+                label="Date souhaitée"
+                error={errors.preferredDate?.message}
+                icon={Calendar}
+              >
+                <input
+                  type="date"
+                  {...register("preferredDate")}
+                  className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-800 dark:border-gray-600"
+                />
+              </InputWrapper>
+
+              <InputWrapper
+                label="Moment préféré"
+                error={errors.preferredTime?.message}
+                icon={Clock}
+              >
+                <select
+                  {...register("preferredTime")}
+                  className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-800 dark:border-gray-600"
+                >
+                  <option value="">Sélectionnez une plage horaire</option>
+                  <option value="morning">Matin (9h-12h)</option>
+                  <option value="afternoon">Après-midi (14h-17h)</option>
+                  <option value="evening">Soirée (17h-19h)</option>
+                </select>
+              </InputWrapper>
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  {...register("isRetirementHome")}
+                  onChange={(e) =>
+                    setShowRetirementHomeFields(e.target.checked)
+                  }
+                  className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
+                />
+                <label className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                  Je représente une maison de retraite
+                </label>
+              </div>
+
+              {showRetirementHomeFields && (
+                <InputWrapper
+                  label="Nombre de participants potentiels"
+                  error={errors.numberOfParticipants?.message}
+                >
+                  <input
+                    type="number"
+                    {...register("numberOfParticipants")}
+                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-800 dark:border-gray-600"
+                    placeholder="Estimation du nombre de participants"
+                  />
+                </InputWrapper>
               )}
             </div>
 
-            <div>
-              <label
-                htmlFor="preferredTime"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                Moment préféré pour l'appel
-              </label>
+            <InputWrapper
+              label="Comment nous avez-vous connu ?"
+              error={errors.howDidYouHearAboutUs?.message}
+            >
               <select
-                {...register("preferredTime")}
-                className={`mt-1 block w-full rounded-md shadow-sm ${
-                  errors.preferredTime
-                    ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                    : "border-gray-300 focus:border-red-500 focus:ring-red-500"
-                } dark:bg-gray-800 dark:border-gray-600`}
+                {...register("howDidYouHearAboutUs")}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-800 dark:border-gray-600"
               >
-                <option value="">Sélectionnez une plage horaire</option>
-                <option value="morning">Matin (9h-12h)</option>
-                <option value="afternoon">Après-midi (14h-17h)</option>
-                <option value="evening">Soirée (17h-19h)</option>
+                <option value="">Sélectionnez une option</option>
+                <option value="search">Recherche sur internet</option>
+                <option value="social">Réseaux sociaux</option>
+                <option value="recommendation">Recommandation</option>
+                <option value="other">Autre</option>
               </select>
-              {errors.preferredTime && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.preferredTime.message}
-                </p>
-              )}
-            </div>
+            </InputWrapper>
 
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                {...register("isRetirementHome")}
-                className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
-              />
-              <label
-                htmlFor="isRetirementHome"
-                className="ml-2 block text-sm text-gray-700 dark:text-gray-300"
-              >
-                Je représente une maison de retraite
-              </label>
-            </div>
-
-            <div>
-              <label
-                htmlFor="message"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                Message (facultatif)
-              </label>
+            <InputWrapper
+              label="Message (facultatif)"
+              error={errors.message?.message}
+            >
               <textarea
                 {...register("message")}
                 rows={4}
-                className={`mt-1 block w-full rounded-md shadow-sm ${
-                  errors.message
-                    ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                    : "border-gray-300 focus:border-red-500 focus:ring-red-500"
-                } dark:bg-gray-800 dark:border-gray-600`}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-800 dark:border-gray-600"
+                placeholder="Partagez-nous vos questions ou besoins spécifiques..."
               />
-              {errors.message && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.message.message}
-                </p>
-              )}
-            </div>
+            </InputWrapper>
 
             <div className="flex justify-end">
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 disabled={isSubmitting}
-                className={`inline-flex justify-center rounded-md border border-transparent px-6 py-3 text-base font-medium text-white shadow-sm ${
+                className={`inline-flex justify-center rounded-md border border-transparent px-8 py-3 text-base font-medium text-white shadow-sm ${
                   isSubmitting
                     ? "bg-gray-400 cursor-not-allowed"
                     : "bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
@@ -281,26 +296,29 @@ export function Contact() {
                 type="submit"
               >
                 {isSubmitting ? (
-                  <svg
-                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                  </svg>
+                  <>
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      />
+                    </svg>
+                    Envoi en cours...
+                  </>
                 ) : (
                   "Réserver mon appel découverte"
                 )}
@@ -331,7 +349,7 @@ export function Contact() {
                   <div className="ml-3">
                     <p className="text-sm font-medium text-green-800">
                       Demande envoyée avec succès ! Nous vous recontacterons
-                      très rapidement.
+                      dans les plus brefs délais.
                     </p>
                   </div>
                 </div>

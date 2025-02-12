@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Pause, Play } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 interface VideoPlayerProps {
@@ -13,6 +12,8 @@ interface VideoPlayerProps {
   muted?: boolean;
   controls?: boolean;
   poster?: string;
+  hideControls?: boolean;
+  objectFit?: "cover" | "contain";
 }
 
 export function VideoPlayer({
@@ -23,33 +24,44 @@ export function VideoPlayer({
   muted = false,
   controls = true,
   poster,
+  hideControls = false,
+  objectFit = "cover",
 }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [showControls, setShowControls] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    const handleTimeUpdate = () => {
-      const progress = (video.currentTime / video.duration) * 100;
-      setProgress(progress);
-    };
-
     const handlePlay = () => setIsPlaying(true);
     const handlePause = () => setIsPlaying(false);
+    const handleEnded = () => {
+      if (loop) {
+        video.play();
+      }
+    };
 
-    video.addEventListener("timeupdate", handleTimeUpdate);
     video.addEventListener("play", handlePlay);
     video.addEventListener("pause", handlePause);
+    video.addEventListener("ended", handleEnded);
+
+    if (autoPlay) {
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          console.log("Autoplay prevented");
+        });
+      }
+    }
 
     return () => {
-      video.removeEventListener("timeupdate", handleTimeUpdate);
       video.removeEventListener("play", handlePlay);
       video.removeEventListener("pause", handlePause);
+      video.removeEventListener("ended", handleEnded);
     };
-  }, []);
+  }, [autoPlay, loop]);
 
   const togglePlay = () => {
     if (!videoRef.current) return;
@@ -61,45 +73,61 @@ export function VideoPlayer({
   };
 
   return (
-    <div className={cn("relative group", className)}>
+    <div
+      className={cn("relative group", className)}
+      onMouseEnter={() => !hideControls && setShowControls(true)}
+      onMouseLeave={() => !hideControls && setShowControls(false)}
+    >
       <video
         ref={videoRef}
         src={src}
-        className="w-full h-full rounded-lg object-cover"
+        className={cn(
+          "w-full h-full rounded-lg",
+          objectFit === "cover" ? "object-cover" : "object-contain"
+        )}
         autoPlay={autoPlay}
         loop={loop}
         muted={muted}
-        controls={controls}
+        controls={controls && !hideControls}
         poster={poster}
+        playsInline
       />
 
-      {!controls && (
-        <>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="absolute inset-0 flex items-center justify-center"
+      {!hideControls && !controls && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: showControls ? 1 : 0 }}
+          transition={{ duration: 0.2 }}
+          className="absolute inset-0 flex items-center justify-center bg-black/20"
+        >
+          <button
+            onClick={togglePlay}
+            className="p-4 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
           >
-            <button
-              onClick={togglePlay}
-              className="p-4 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
             >
               {isPlaying ? (
-                <Pause className="w-6 h-6" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               ) : (
-                <Play className="w-6 h-6" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+                />
               )}
-            </button>
-          </motion.div>
-
-          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-200/20">
-            <motion.div
-              className="h-full bg-red-600"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-        </>
+            </svg>
+          </button>
+        </motion.div>
       )}
     </div>
   );

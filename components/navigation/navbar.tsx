@@ -3,8 +3,7 @@
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import * as React from "react";
 
 const navigation = [
@@ -17,9 +16,11 @@ const navigation = [
 
 export function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [mounted, setMounted] = React.useState(false);
+  const [isNavigating, setIsNavigating] = React.useState(false);
 
   React.useEffect(() => {
     setMounted(true);
@@ -29,6 +30,14 @@ export function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Gestion de la navigation
+  const handleNavigation = (href: string) => {
+    setIsNavigating(true);
+    setIsMobileMenuOpen(false);
+    router.push(href);
+    setTimeout(() => setIsNavigating(false), 500);
+  };
 
   if (!mounted) {
     return null;
@@ -52,7 +61,10 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             className="flex items-center"
           >
-            <Link href="/" className="relative w-40 h-10">
+            <button
+              onClick={() => handleNavigation("/")}
+              className="relative w-40 h-10 focus:outline-none"
+            >
               <Image
                 src="/images/logo.svg"
                 alt="MEMENTO"
@@ -60,7 +72,7 @@ export function Navbar() {
                 className="object-contain"
                 priority
               />
-            </Link>
+            </button>
           </motion.div>
 
           {/* Desktop Navigation */}
@@ -69,11 +81,11 @@ export function Navbar() {
               {navigation.map((item) => {
                 const isActive = pathname === item.href;
                 return (
-                  <Link
+                  <button
                     key={item.name}
-                    href={item.href}
+                    onClick={() => handleNavigation(item.href)}
                     className={cn(
-                      "relative px-3 py-2 text-sm font-medium transition-colors duration-200",
+                      "relative px-3 py-2 text-sm font-medium transition-colors duration-200 focus:outline-none",
                       isScrolled
                         ? isActive
                           ? "text-red-600 dark:text-red-400"
@@ -93,7 +105,7 @@ export function Navbar() {
                         )}
                       />
                     )}
-                  </Link>
+                  </button>
                 );
               })}
             </div>
@@ -151,24 +163,33 @@ export function Navbar() {
             {navigation.map((item) => {
               const isActive = pathname === item.href;
               return (
-                <Link
+                <button
                   key={item.name}
-                  href={item.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={() => handleNavigation(item.href)}
                   className={cn(
-                    "block rounded-md px-3 py-2 text-base font-medium transition-colors",
+                    "block w-full text-left rounded-md px-3 py-2 text-base font-medium transition-colors",
                     isActive
                       ? "bg-red-500/10 text-red-600 dark:text-red-400"
                       : "text-gray-900 hover:bg-gray-100 hover:text-red-600 dark:text-gray-100 dark:hover:bg-gray-800 dark:hover:text-red-400"
                   )}
                 >
                   {item.name}
-                </Link>
+                </button>
               );
             })}
           </div>
         </motion.div>
       </nav>
+
+      {/* Overlay de transition */}
+      {isNavigating && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
+        />
+      )}
     </motion.header>
   );
 }

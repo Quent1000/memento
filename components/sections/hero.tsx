@@ -1,8 +1,24 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { ArrowRight, Clock, Heart, Shield } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+
+const highlights = [
+  {
+    icon: Clock,
+    text: "Séance de 45 minutes seulement",
+  },
+  {
+    icon: Shield,
+    text: "Conservation sécurisée à vie",
+  },
+  {
+    icon: Heart,
+    text: "100% des familles satisfaites",
+  },
+];
 
 export function Hero() {
   return (
@@ -44,7 +60,7 @@ export function Hero() {
               />
             </span>
             <span className="block text-3xl sm:text-4xl md:text-5xl mt-3 text-red-400">
-              Votre Capsule Temporelle en Vidéo
+              Transformez vos Souvenirs en Héritage
             </span>
           </motion.h1>
 
@@ -54,9 +70,27 @@ export function Hero() {
             transition={{ delay: 0.4, duration: 0.8 }}
             className="mt-6 max-w-lg mx-auto text-xl text-gray-200 sm:max-w-3xl"
           >
-            Capturez un Instant, Transmettez une Vie. Des souvenirs précieux qui
-            traverseront le temps.
+            Capturez les histoires de vie de vos proches en vidéo et créez un
+            héritage émotionnel unique qui traversera les générations.
           </motion.p>
+
+          {/* Points clés */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+            className="mt-8 flex flex-wrap justify-center gap-4 text-white"
+          >
+            {highlights.map((highlight, index) => (
+              <div
+                key={index}
+                className="flex items-center space-x-2 bg-black/20 rounded-full px-4 py-2"
+              >
+                <highlight.icon className="h-5 w-5" />
+                <span className="text-sm">{highlight.text}</span>
+              </div>
+            ))}
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -69,13 +103,31 @@ export function Hero() {
               className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-red-600 hover:bg-red-700 md:py-4 md:text-lg md:px-10 transition-all duration-200 transform hover:scale-105"
             >
               Réserver une séance
+              <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
             <Link
               href="/prestations"
               className="mt-3 sm:mt-0 w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-red-600 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10 transition-all duration-200 transform hover:scale-105"
             >
               Découvrir nos offres
+              <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
+          </motion.div>
+
+          {/* Prix à partir de */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7, duration: 0.8 }}
+            className="mt-8 text-center"
+          >
+            <p className="text-white text-sm">
+              À partir de{" "}
+              <span className="font-bold text-red-400 text-lg">950€</span>
+              <span className="block text-xs mt-1">
+                Réduction pour les maisons de retraite
+              </span>
+            </p>
           </motion.div>
         </motion.div>
 

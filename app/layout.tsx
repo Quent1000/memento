@@ -38,13 +38,15 @@ export const metadata: Metadata = {
       "Capturez vos souvenirs les plus précieux en vidéo et transmettez votre histoire aux générations futures.",
   },
   icons: {
-    icon: [
-      {
-        url: "/images/logo.svg",
-        type: "image/svg+xml",
-      },
-    ],
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+    other: {
+      rel: "apple-touch-icon-precomposed",
+      url: "/apple-touch-icon-precomposed.png",
+    },
   },
+  manifest: "/site.webmanifest",
   robots: "index, follow",
 };
 
@@ -53,6 +55,10 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+// Configuration pour désactiver le cache statique et forcer le rendu dynamique
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default function RootLayout({
   children,
 }: {
@@ -60,6 +66,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" className="scroll-smooth">
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+      </head>
       <body className={inter.className}>
         <Navbar />
         <main className="min-h-screen">{children}</main>

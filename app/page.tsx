@@ -1,52 +1,43 @@
 "use client";
 
 import { Contact } from "@/components/sections/contact";
-import { Features } from "@/components/sections/features";
 import { Hero } from "@/components/sections/hero";
-import { Pricing } from "@/components/sections/pricing";
-import { Testimonials } from "@/components/sections/testimonials";
+import { HowItWorks } from "@/components/sections/how-it-works";
+import { Impact } from "@/components/sections/impact";
+import { Offers } from "@/components/sections/offers";
 import { motion } from "framer-motion";
+
+const MotionWrapper = ({ children }: { children: React.ReactNode }) => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    whileInView={{ opacity: 1 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5 }}
+  >
+    {children}
+  </motion.div>
+);
 
 export default function Home() {
   return (
     <>
       <Hero />
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-      >
-        <Features />
-      </motion.div>
+      <MotionWrapper>
+        <Impact />
+      </MotionWrapper>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-      >
-        <Pricing />
-      </motion.div>
+      <MotionWrapper>
+        <HowItWorks />
+      </MotionWrapper>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-      >
-        <Testimonials />
-      </motion.div>
+      <MotionWrapper>
+        <Offers />
+      </MotionWrapper>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-      >
+      <MotionWrapper>
         <Contact />
-      </motion.div>
+      </MotionWrapper>
     </>
   );
 }
