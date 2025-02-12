@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="300" height="60" viewBox="0 0 300 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <text x="10" y="45" font-family="Inter, sans-serif" font-size="48" font-weight="700" letter-spacing="0.05em">
+    <tspan fill="#FFFFFF">ME</tspan>
+    <tspan fill="#FF4444">MENTO</tspan>
+  </text>
+  <text x="10" y="45" font-family="Inter, sans-serif" font-size="48" font-weight="700" letter-spacing="0.05em" stroke="#000000" stroke-width="2" opacity="0.1">
+    <tspan>ME</tspan>
+    <tspan>MENTO</tspan>
+  </text>
+</svg> 
