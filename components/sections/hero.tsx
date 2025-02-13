@@ -50,13 +50,13 @@ export function Hero() {
             transition={{ delay: 0.2, duration: 0.8 }}
             className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl"
           >
-            <span className="block">
+            <span className="block [&_.logo-me]:fill-white">
               <Image
-                src="/images/logo.svg"
+                src="/images/logo-white.svg"
                 alt="MEMENTO"
                 width={300}
                 height={75}
-                className="mx-auto dark:invert"
+                className="mx-auto"
               />
             </span>
             <span className="block text-3xl sm:text-4xl md:text-5xl mt-3 text-red-400">

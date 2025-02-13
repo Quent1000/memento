@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="300" height="60" viewBox="0 0 300 60" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo">
+<svg width="300" height="60" viewBox="0 0 300 60" fill="none" xmlns="http://www.w3.org/2000/svg">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Encode+Sans+Narrow:wght@700&amp;display=swap');
-    .logo .logo-me { fill: currentColor; }
   </style>
   <text>
-    <tspan x="10" y="45" font-family="'Encode Sans Narrow', sans-serif" font-size="48" font-weight="700" class="logo-me">ME</tspan
+    <tspan x="10" y="45" font-family="'Encode Sans Narrow', sans-serif" font-size="48" font-weight="700" fill="white">ME</tspan
     ><tspan font-family="'Encode Sans Narrow', sans-serif" font-size="48" font-weight="700" fill="#FF0000">MENTO</tspan>
   </text>
 </svg> 

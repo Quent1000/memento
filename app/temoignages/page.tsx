@@ -106,7 +106,7 @@ export default function TemoignagesPage() {
               </div>
               <div className="flex-1 p-6">
                 <blockquote className="mt-3 text-gray-700 dark:text-gray-300">
-                  "{testimonial.content}"
+                  &quot;{testimonial.content}&quot;
                 </blockquote>
                 <div className="mt-6 flex items-center gap-x-4">
                   <div className="text-sm">

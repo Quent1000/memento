@@ -57,8 +57,8 @@ export function Impact() {
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
             <p className="text-xl font-medium italic">
-              "Les souvenirs sont le trésor le plus précieux que nous pouvons
-              léguer à nos enfants"
+              &ldquo;Les souvenirs sont le trésor le plus précieux que nous pouvons
+              léguer à nos enfants&rdquo;
             </p>
           </div>
         </div>

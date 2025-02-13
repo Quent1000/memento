@@ -37,7 +37,7 @@ export default function Error({
         <div className="mt-8 flex justify-center gap-4">
           <Button onClick={reset}>Réessayer</Button>
           <Button variant="outline" onClick={() => window.location.assign("/")}>
-            Retour à l'accueil
+            Retour à l&apos;accueil
           </Button>
         </div>
       </motion.div>

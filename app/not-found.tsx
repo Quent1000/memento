@@ -21,11 +21,11 @@ export default function NotFound() {
           Page introuvable
         </h1>
         <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
-          Désolé, la page que vous recherchez n'existe pas ou a été déplacée.
+          Désolé, la page que vous recherchez n&apos;existe pas ou a été déplacée.
         </p>
         <div className="mt-8">
           <Button onClick={() => window.location.assign("/")}>
-            Retour à l'accueil
+            Retour à l&apos;accueil
           </Button>
         </div>
       </motion.div>

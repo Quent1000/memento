@@ -4,7 +4,14 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const testimonials = [
+interface Testimonial {
+  content: string;
+  author: string;
+  role: string;
+  image?: string;
+}
+
+const testimonials: Testimonial[] = [
   {
     content:
       "Ma grand-mère nous a quittés, mais grâce à MEMENTO, sa voix et son histoire restent présentes. C'est le plus beau cadeau que nous ayons reçu.",

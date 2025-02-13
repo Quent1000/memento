@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import type { SVGProps } from "react";
 
 const navigation = {
   main: [
@@ -21,7 +22,7 @@ const navigation = {
     {
       name: "LinkedIn",
       href: "#",
-      icon: (props: any) => (
+      icon: (props: SVGProps<SVGSVGElement>) => (
         <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
           <path
             fillRule="evenodd"
@@ -34,7 +35,7 @@ const navigation = {
     {
       name: "Instagram",
       href: "#",
-      icon: (props: any) => (
+      icon: (props: SVGProps<SVGSVGElement>) => (
         <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
           <path
             fillRule="evenodd"

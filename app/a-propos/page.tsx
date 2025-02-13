@@ -79,7 +79,7 @@ export default function AProposPage() {
               Notre Mission
             </h2>
             <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
-              Chez MEMENTO, nous croyons que chaque histoire mérite d'être
+              Chez MEMENTO, nous croyons que chaque histoire mérite d&apos;être
               préservée et transmise aux générations futures. Notre mission est
               de capturer ces moments précieux et de les transformer en
               héritages durables.
@@ -215,11 +215,12 @@ export default function AProposPage() {
                 </p>
                 <p className="mt-4 text-gray-600 dark:text-gray-300">
                   Passionné par le pouvoir des histoires et leur capacité à
-                  connecter les générations, j'ai créé MEMENTO pour offrir un
-                  moyen unique de préserver les souvenirs les plus précieux de
-                  nos aînés. Avec une formation en audiovisuel et une expérience
-                  dans la réalisation de documentaires, je mets mes compétences
-                  au service de la transmission intergénérationnelle.
+                  connecter les générations, j&apos;ai créé MEMENTO pour offrir
+                  un moyen unique de préserver les souvenirs les plus précieux
+                  de nos aînés. Avec une formation en audiovisuel et une
+                  expérience dans la réalisation de documentaires, je mets mes
+                  compétences au service de la transmission
+                  intergénérationnelle.
                 </p>
                 <div className="mt-6 flex justify-center space-x-4">
                   <a

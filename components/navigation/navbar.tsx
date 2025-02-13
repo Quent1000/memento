@@ -66,7 +66,11 @@ export function Navbar() {
               className="relative w-40 h-10 focus:outline-none"
             >
               <Image
-                src="/images/logo.svg"
+                src={
+                  isScrolled
+                    ? "/images/logo-black.svg"
+                    : "/images/logo-white.svg"
+                }
                 alt="MEMENTO"
                 fill
                 className="object-contain"

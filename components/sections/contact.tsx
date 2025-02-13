@@ -7,12 +7,13 @@ import {
   Clock,
   Heart,
   Info,
+  LucideIcon,
   Mail,
   MapPin,
   Phone,
   User,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -57,7 +58,7 @@ const InputWrapper = ({
   children: React.ReactNode;
   label: string;
   error?: string;
-  icon?: React.ComponentType<any>;
+  icon?: LucideIcon;
   required?: boolean;
 }) => (
   <motion.div
@@ -106,7 +107,10 @@ export function Contact() {
     resolver: zodResolver(formSchema),
   });
 
-  const isRetirementHome = watch("isRetirementHome");
+  useEffect(() => {
+    const isRetirementHome = watch("isRetirementHome");
+    setShowRetirementHomeFields(isRetirementHome);
+  }, [watch]);
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
@@ -137,8 +141,8 @@ export function Contact() {
           </h2>
           <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             Prenez rendez-vous pour un appel découverte gratuit et sans
-            engagement. Nous prendrons le temps d'échanger sur votre projet et
-            de répondre à toutes vos questions.
+            engagement. Nous prendrons le temps d&apos;échanger sur votre projet
+            et de répondre à toutes vos questions.
           </p>
         </motion.div>
 
@@ -149,7 +153,7 @@ export function Contact() {
           transition={{ delay: 0.2, duration: 0.5 }}
           className="mt-16 max-w-3xl mx-auto"
         >
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 md:p-12">
+          <div className="bg-white dark:bg-gray-900/50 rounded-2xl shadow-xl p-8 md:p-12">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
               <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
                 <InputWrapper
@@ -161,7 +165,7 @@ export function Contact() {
                   <input
                     type="text"
                     {...register("firstName")}
-                    className="pl-10 block w-full rounded-lg border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 transition-colors"
+                    className="pl-10 block w-full rounded-lg border-gray-300 bg-white shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-900/50 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 transition-colors"
                     placeholder="Jean"
                   />
                 </InputWrapper>
@@ -175,7 +179,7 @@ export function Contact() {
                   <input
                     type="text"
                     {...register("lastName")}
-                    className="pl-10 block w-full rounded-lg border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 transition-colors"
+                    className="pl-10 block w-full rounded-lg border-gray-300 bg-white shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-900/50 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 transition-colors"
                     placeholder="Dupont"
                   />
                 </InputWrapper>
@@ -191,7 +195,7 @@ export function Contact() {
                   <input
                     type="email"
                     {...register("email")}
-                    className="pl-10 block w-full rounded-lg border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 transition-colors"
+                    className="pl-10 block w-full rounded-lg border-gray-300 bg-white shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-900/50 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 transition-colors"
                     placeholder="jean.dupont@example.com"
                   />
                 </InputWrapper>
@@ -205,7 +209,7 @@ export function Contact() {
                   <input
                     type="tel"
                     {...register("phone")}
-                    className="pl-10 block w-full rounded-lg border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 transition-colors"
+                    className="pl-10 block w-full rounded-lg border-gray-300 bg-white shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-900/50 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 transition-colors"
                     placeholder="06 12 34 56 78"
                   />
                 </InputWrapper>
@@ -219,7 +223,7 @@ export function Contact() {
               >
                 <select
                   {...register("service")}
-                  className="pl-10 block w-full rounded-lg border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 transition-colors"
+                  className="pl-10 block w-full rounded-lg border-gray-300 bg-white shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-900/50 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 transition-colors"
                 >
                   <option value="">Sélectionnez une option</option>
                   <option value="basic">Capsule Essentielle (950€)</option>
@@ -238,7 +242,7 @@ export function Contact() {
                   <input
                     type="date"
                     {...register("preferredDate")}
-                    className="pl-10 block w-full rounded-lg border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 transition-colors"
+                    className="pl-10 block w-full rounded-lg border-gray-300 bg-white shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-900/50 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 transition-colors"
                   />
                 </InputWrapper>
 
@@ -250,7 +254,7 @@ export function Contact() {
                 >
                   <select
                     {...register("preferredTime")}
-                    className="pl-10 block w-full rounded-lg border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 transition-colors"
+                    className="pl-10 block w-full rounded-lg border-gray-300 bg-white shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-900/50 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 transition-colors"
                   >
                     <option value="">Sélectionnez une plage horaire</option>
                     <option value="morning">Matin (9h-12h)</option>
@@ -284,7 +288,7 @@ export function Contact() {
                     <input
                       type="number"
                       {...register("numberOfParticipants")}
-                      className="pl-10 block w-full rounded-lg border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 transition-colors"
+                      className="pl-10 block w-full rounded-lg border-gray-300 bg-white shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-900/50 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 transition-colors"
                       placeholder="Estimation du nombre de participants"
                     />
                   </InputWrapper>
@@ -299,7 +303,7 @@ export function Contact() {
               >
                 <select
                   {...register("howDidYouHearAboutUs")}
-                  className="pl-10 block w-full rounded-lg border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 transition-colors"
+                  className="pl-10 block w-full rounded-lg border-gray-300 bg-white shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-900/50 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 transition-colors"
                 >
                   <option value="">Sélectionnez une option</option>
                   <option value="search">Recherche sur internet</option>
@@ -317,7 +321,7 @@ export function Contact() {
                 <textarea
                   {...register("message")}
                   rows={4}
-                  className="pl-10 block w-full rounded-lg border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 transition-colors resize-none"
+                  className="pl-10 block w-full rounded-lg border-gray-300 bg-white shadow-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-900/50 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 transition-colors resize-none"
                   placeholder="Partagez-nous vos questions ou besoins spécifiques..."
                 />
               </InputWrapper>
@@ -365,9 +369,8 @@ export function Contact() {
                     </>
                   )}
                 </motion.button>
-
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  En soumettant ce formulaire, vous acceptez d'être
+                  En soumettant ce formulaire, vous acceptez d&apos;être
                   recontacté(e) par notre équipe.
                 </p>
               </div>
@@ -447,7 +450,7 @@ export function Contact() {
                 <MapPin className="h-6 w-6 text-red-600 dark:text-red-400" />
               </div>
               <h3 className="mt-4 text-lg font-medium text-gray-900 dark:text-white">
-                Zone d'intervention
+                Zone d&apos;intervention
               </h3>
               <p className="mt-2 text-gray-600 dark:text-gray-300">
                 Région Lausannoise
