@@ -50,7 +50,7 @@ export function Hero() {
             transition={{ delay: 0.2, duration: 0.8 }}
             className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl"
           >
-            <span className="block [&_.logo-me]:fill-white">
+            {/* <span className="block [&_.logo-me]:fill-white">
               <Image
                 src="/images/logo-white.svg"
                 alt="MEMENTO"
@@ -58,7 +58,7 @@ export function Hero() {
                 height={75}
                 className="mx-auto"
               />
-            </span>
+            </span> */}
             <span className="block text-3xl sm:text-4xl md:text-5xl mt-3 text-red-400">
               Transformez vos Souvenirs en Héritage
             </span>
